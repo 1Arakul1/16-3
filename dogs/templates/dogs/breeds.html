@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    {% for breed, dogs in breeds_with_dogs.items %}
+        <h2>{{ breed.name }}</h2>
+        <ul>
+            {% for dog in dogs %}
+                <li>
+                    {{ dog.name }} ({{ dog.breed.name }}), {{ dog.age }} лет (ID: {{ dog.id }})
+                    {% if dog.image %}
+                        <img src="{{ dog.image.url }}" alt="{{ dog.name }}" width="100">
+                    {% endif %}
+                    {% if dog.description %}
+                        <p>Описание: {{ dog.description }}</p>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+{% endblock %}

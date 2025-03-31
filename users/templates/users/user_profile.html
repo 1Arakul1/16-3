@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+  <h1 class="text-center mb-4">Профиль пользователя</h1>
+  <p class="text-center">Здесь будет информация о профиле пользователя.</p>
+
+  <h2 class="text-center mb-3">Ваши собаки:</h2>
+  <div class="container">
+    <div id="dog-cards" class="row row-cols-1 row-cols-md-5 g-4">
+      {% for dog in dogs %}
+        <div class="col">
+          <div class="card h-100">
+            {% if dog.image %}
+              <img src="{{ dog.image.url }}" alt="{{ dog.name }}" class="card-img-top" style="max-height: 150px;">
+            {% else %}
+              <div class="card-img-top" style="background-color: #f8f9fa; height: 150px;"></div>
+            {% endif %}
+            <div class="card-body d-flex flex-column justify-content-between p-3">
+              <div>
+                <h5 class="card-title mb-2">{{ dog.name }}</h5>
+                <p class="card-text mb-2"><small>Порода: {{ dog.breed.name }}</small></p>
+                <p class="card-text mb-2"><small>Возраст: {{ dog.age }} лет</small></p>
+                <p class="card-text mb-2">{{ dog.description }}</p>
+              </div>
+              <a href="{% url 'dogs:dog_read' pk=dog.pk %}" class="btn btn-primary w-100 mb-3">Подробнее</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <script>
+    const dogs = JSON.parse('{{ dogs_json|escapejs }}'); // Получаем данные о собаках из JSON
+
+    function createDogCard(dog) {
+      const cardContainer = document.getElementById('dog-cards-container');
+      const card = document.createElement('div');
+      card.classList.add('dog-card', 'col-md-2', 'mb-4');
+      card.innerHTML = `
+        <div class="card h-100">
+          <img src="" alt="${dog.name}" class="card-img-top">
+          <div class="card-body d-flex flex-column justify-content-between p-3">
+            <div>
+              <h5 class="card-title mb-2">${dog.name}</h5>
+              <p class="card-text mb-2"><small>Порода: ${dog.breed.name}</small></p>
+              <p class="card-text mb-2"><small>Возраст: ${dog.age} лет</small></p>
+              <p class="card-text mb-2">${dog.description}</p>
+            </div>
+            <a href="/dogs/${dog.id}/" class="btn btn-primary w-100 mb-3">Подробнее</a>
+          </div>
+        </div>
+      `;
+      cardContainer.appendChild(card);
+    }
+
+    dogs.forEach(dog => {
+      createDogCard(dog);
+    });
+  </script>
+
+  <style>
+    .dog-card {
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      height: 100%;
+    }
+
+    .card-body {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-body div {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card-body p,
+    .card-body small {
+      margin-bottom: 0.5rem;
+    }
+
+    .card-body a {
+      margin-top: 0.5rem;
+    }
+
+    .card-img-top {
+      height: 150px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-img-top img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  </style>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
